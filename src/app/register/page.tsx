@@ -26,7 +26,7 @@ const Register = () => {
       
       try{
             console.log(data)
-            router.push('/login')
+            router.push('/valid')
       }
       catch(err){
         console.log(err)

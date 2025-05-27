@@ -6,7 +6,8 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { FaUserCircle } from 'react-icons/fa';
+import { FaEyeSlash, FaUserCircle } from 'react-icons/fa';
+import { IoEyeSharp } from 'react-icons/io5';
 import { RiLockPasswordFill } from 'react-icons/ri';
 
 
@@ -16,6 +17,7 @@ const Login = () => {
   const[username,setUsername]= useState('');
   const[password,setPassword]= useState('');
   const router = useRouter()
+  const[showpassword,setShowpassword] = useState(false)
 
   
 
@@ -36,6 +38,7 @@ const Login = () => {
     }
     
   }
+
   
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-10ch)] bg-gray-100 px-4">
@@ -65,16 +68,19 @@ const Login = () => {
           <label htmlFor="password" className="text-neutral-700 font-medium">
             Password:
           </label>
-          <div className="flex items-center border border-gray-300 rounded-xl px-4 py-2 bg-gray-50">
+          <div className="flex relative items-center border border-gray-300 rounded-xl px-4 py-2 bg-gray-50">
             <RiLockPasswordFill className="text-gray-500 mr-2" />
             <input
-              type="password"
+              type={showpassword?"text":"password"}
               id="password"
               value={password}
               onChange={(e)=>setPassword(e.target.value)}
               placeholder="Enter your password"
               className="flex-1 bg-transparent outline-none text-neutral-800"
             />
+            <span onClick={()=>setShowpassword(!showpassword)} className='absolute top-3 right-4 cursor-pointer'>
+              {showpassword?<IoEyeSharp/>:<FaEyeSlash/>}
+              </span>
           </div>
         </div>
 
@@ -87,7 +93,7 @@ const Login = () => {
           </div>
           {/* Forget Password */}
           <div>
-             <span className='cursor-pointer hover:underline hover:text-blue-500'>Forget Password</span>
+             <Link href={'/forget'} className='cursor-pointer hover:underline hover:text-blue-500'>Forget Password</Link>
           </div>
         </div>
 
