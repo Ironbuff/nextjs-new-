@@ -36,14 +36,14 @@ const Navbar = () => {
   
     return (
     <>
-    <nav className='h-[10ch] bg-neutral-100 border-2 border-neutral-100 shadow-md flex flex-row items-center justify-between md:px-28 px-4 '>
+    <nav className={'h-[10ch] bg-neutral-100 border-2 border-neutral-100 shadow-md flex flex-row items-center justify-between lg:px-28 px-3'}>
         {/* Title Section */}
-        <div className='flex flex-row items-center'>
+        <Link href={'/'} className='flex flex-row items-center'>
             <Image src={img} alt='blog-app' className='h-[10vh] w-fit'/>
             <h1 className='text-neutral-800 md:text-3xl text-2xl font-bold tracking-wide'>
                 My <span className='text-gray-500'> Blog</span>
             </h1>
-        </div>
+        </Link>
 
         {/* items-section */}
         <div className='md:flex hidden flex-row gap-x-3 text-base font-base text-neutral-200'>
@@ -64,9 +64,9 @@ const Navbar = () => {
     {
         mobilenav && (
             <div className='flex items-center justify-center w-full h-screen bg-neutral-200'>
-                <div className='absolute top-8 z-5 right-4'>
+                <div className='absolute top-8 z-50 right-4.5'>
                     <button onClick={()=>setMobilenav(!mobilenav)} >
-                        <FaX size={21} className='font-bold'/>
+                        <FaX size={20} className='font-bold'/>
                     </button>
                 </div>
                 <div className='flex flex-col w-full items-center justify-center gap-y-2'>

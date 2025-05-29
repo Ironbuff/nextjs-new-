@@ -24,14 +24,14 @@ const Changepassword = () => {
     }
 
     return (
-        <div className='flex flex-col  items-center justify-center  max-w-full max-h-screen h-[calc(100vh-10ch)]'>
+        <div className='flex flex-col bg-gray-100  items-center justify-center  max-w-full max-h-screen h-[calc(100vh-10ch)]'>
             {/* heading */}
 
-            <div className='flex flex-col md:w-[25%] w-[50%]  items-center justify-center  border-neutral-100 border-2 rounded-lg shadow-md'>
-                <h1 className='text-2xl font-bold py-5'>
+            <div className='flex flex-col lg:w-[25%] w-[45%]  items-center justify-center  border-neutral-50 bg-neutral-50 border-2 rounded-lg shadow-md'>
+                <h1 className='text-2xl  font-bold py-6'>
                     Change Password
                 </h1>
-                <form onSubmit={handleChange} className='flex flex-col w-full px-3 py-4  max-w-md gap-y-2 items-center justify-center'>
+                <form onSubmit={handleChange} className='flex flex-col w-full px-4 py-4  max-w-md gap-y-2 items-center justify-center'>
                     <div className='flex flex-col gap-y-2  w-full'>
                         <label
                             htmlFor="New Password"

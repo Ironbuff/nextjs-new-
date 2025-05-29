@@ -1,44 +1,51 @@
 'use client'
 
+import { registerUser } from '@/lib/api/auth';
+
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+
 import React, { useState } from 'react';
-import { FaUserCircle } from 'react-icons/fa';
+import { FaEyeSlash, FaUserCircle } from 'react-icons/fa';
+import { IoEyeSharp } from 'react-icons/io5';
 import { MdMail } from 'react-icons/md';
 import { RiLockPasswordFill } from 'react-icons/ri';
 
 
 const Register = () => {
 
-    const [username,setUsername]= useState('')
-    const [password,setPassword]= useState('')
-    const [email,setEmail]= useState('')
-    const router = useRouter()
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('')
+  const router = useRouter()
+  const [showpassword, setShowpassword] = useState(false)
 
-    const data = {
-      username,
-      password,
-      email,
-    }
+ 
 
-    const handleregister = async(e:React.FormEvent<HTMLFormElement>) =>{
-      e.preventDefault()
-      
-      try{
-            console.log(data)
-            router.push('/valid')
+  const handleregister = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    try {
+      const result = await registerUser({username,password,email})
+      console.log(result.status)
+      if(result.status===200){
+        alert('registered')
+        router.push('/valid')
       }
-      catch(err){
-        console.log(err)
-      }
+
+     
     }
+    catch (err) {
+      console.log(err)
+    }
+  }
 
 
 
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-10ch)] bg-gray-100 px-4">
       <form onSubmit={handleregister} className="w-full max-w-xl bg-white rounded-2xl shadow-lg p-12 space-y-6"
-        
+
       >
         <h1 className="text-3xl font-bold text-center text-neutral-700">Register</h1>
 
@@ -53,7 +60,7 @@ const Register = () => {
               type="text"
               id="username"
               value={username}
-              onChange={(e)=>setUsername(e.target.value)}
+              onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter your username"
               className="flex-1 bg-transparent outline-none text-neutral-800"
             />
@@ -74,7 +81,7 @@ const Register = () => {
               placeholder="Enter your Email"
               className="flex-1 bg-transparent outline-none text-neutral-800"
               value={email}
-              onChange={(e)=>setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
         </div>
@@ -85,20 +92,23 @@ const Register = () => {
           <label htmlFor="password" className="text-neutral-700 font-medium">
             Password:
           </label>
-          <div className="flex focus:ring-2 focus:ring-blue-500 items-center border border-gray-300 rounded-xl px-4 py-2 bg-gray-50">
+          <div className="flex relative focus:ring-2 focus:ring-blue-500 items-center border border-gray-300 rounded-xl px-4 py-2 bg-gray-50">
             <RiLockPasswordFill className="text-gray-500 mr-2 " />
             <input
-              type="password"
+              type={showpassword ? "text" : "password"}
               id="password"
               placeholder="Enter your password"
               className=" bg-transparent outline-none text-neutral-800"
               value={password}
-              onChange={(e)=>setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
             />
+            <span onClick={() => setShowpassword(!showpassword)} className='absolute top-3 right-4 cursor-pointer'>
+              {showpassword ? <IoEyeSharp /> : <FaEyeSlash />}
+            </span>
           </div>
         </div>
 
-       
+
 
         {/* Button */}
         <button type='submit' className="w-full bg-blue-500 hover:bg-blue-400 text-white font-semibold py-2 rounded-xl transition-transform hover:scale-105">

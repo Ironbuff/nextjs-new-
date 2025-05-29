@@ -14,7 +14,7 @@ export default function ClientProviders({
     <Provider store={store}>
       <Navbar />
       {children}
-      <Footer />
+      {/* <Footer /> */}
     </Provider>
   );
 }

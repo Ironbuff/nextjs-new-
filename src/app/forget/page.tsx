@@ -8,12 +8,21 @@ const Forget = () => {
   
   const[submitted,setSubmitted]= useState(false)
   const[email,setEmail]= useState('')
+  const sucess= 'http://localhost:3000/sucess'
+  const failure= 'http://localhost:3000/failure'
+
+  
   const router = useRouter()
 
   const handleSubmit = async(e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault()
     try{
       console.log("Email Sent ",email)
+      const data = {
+        email,
+        sucess,
+        failure,
+      }
       setSubmitted(!submitted)
       router.push('/change')
     }

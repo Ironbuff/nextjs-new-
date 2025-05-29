@@ -6,15 +6,13 @@ import { RxAvatar } from 'react-icons/rx'
 import { motion } from 'framer-motion'
 import { FaArrowUp } from 'react-icons/fa'
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
+
 
 
 
 
 const blogs = () => {
  
-  
-    const id = useParams()
  
     const DummyData = [
     { id: 1, title: "First-Blog", creator: "First", Description: "BlogDescription", summary: "It shows the First blog ever created in the website", date: "2025-03-04" },
@@ -29,9 +27,9 @@ const blogs = () => {
             </h1>
 
 
-            <div className='flex md:flex-row flex-col gap-x-2 w-full flex-nowrap items-center justify-center'>
+            <div className='flex md:flex-row flex-col gap-y-3 gap-x-2 w-full flex-nowrap items-center justify-center'>
                 {DummyData.map((item) => (
-                   <Link href={`/blogs/${blogs.id}`} key={item.id}>
+                   <Link href={`/blogs/${item.id}`} key={item.id}>
                     <motion.div
                         animate={{ opacity:1,scale:1 }}
                         initial={{ opacity:0.8 , scale:0.8 }}

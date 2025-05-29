@@ -9,29 +9,35 @@ import React, { useState } from 'react';
 import { FaEyeSlash, FaUserCircle } from 'react-icons/fa';
 import { IoEyeSharp } from 'react-icons/io5';
 import { RiLockPasswordFill } from 'react-icons/ri';
+import { loginUser } from '@/lib/api/auth';
+import { useDispatch } from 'react-redux';
+import { authActions } from '@/store/auth';
 
 
 
 const Login = () => {
   
-  const[username,setUsername]= useState('');
+  const[email,setEmail]= useState('');
   const[password,setPassword]= useState('');
   const router = useRouter()
   const[showpassword,setShowpassword] = useState(false)
+  const dispatch = useDispatch()
+  
 
   
 
   const handlesubmit = async(e: React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault()
     try{
-       const data ={
-        username,
-        password,
+       const result = await loginUser({email,password})
+       if(result.status===200){
+        alert('sucessfully logged In')
+        dispatch(authActions.loggin())
+        localStorage.setItem('token',result.data.token)
+        router.push('/')
        }
 
-       console.log(data)
-       router.push('/')
-
+       
     }
     catch(err){
       console.log(err)
@@ -47,15 +53,15 @@ const Login = () => {
 
         {/* Username field */}
         <div className="space-y-1">
-          <label htmlFor="username" className="text-neutral-700 font-medium">
-            Username:
+          <label htmlFor="Email" className="text-neutral-700 font-medium">
+            Email:
           </label>
           <div className="flex items-center border border-gray-300 focus:ring-2 focus:ring-blue-500 rounded-xl px-4 py-2 bg-gray-50">
             <FaUserCircle className="text-gray-500 mr-2" />
             <input
-              type="text"
-              value={username}
-              onChange={(e)=>setUsername(e.target.value)}
+              type="email"
+              value={email}
+              onChange={(e)=>setEmail(e.target.value)}
               id="username"
               placeholder="Enter your username"
               className="flex-1 bg-transparent outline-none text-neutral-800"
