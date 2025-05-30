@@ -42,3 +42,29 @@ export const Emailverification = async(data:{
     return response.data
 }
 
+
+export const forgetpassword = async(data:{
+    email:string,
+    redirectLink:string,
+})=>{
+    const response = await axios.post(`${api}/api/AuthApi/SendPasswordResetMail`,data,{
+        headers:{
+            'Content-Type':'application/json',
+        }
+    })
+    return response
+}
+  
+
+export const changePassword = async(data:{
+    newpassword:string,
+    token:string,
+    userId:string,
+})=>{
+    const response = await axios.post(`${api}/api/AuthApi/confirmPassword`,data,{
+        headers:{
+            'Content-Type':'application/json',
+        }
+    })
+    return response
+}

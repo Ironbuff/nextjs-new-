@@ -20,6 +20,10 @@ const authSlice = createSlice({
     logout(state) {
       state.isloggedIn = false;
     },
+    adduser(state, action) {
+      const user = action.payload;
+      state.user = user;
+    },
   },
 });
 

@@ -2,12 +2,16 @@
 
 import React, { useRef, useState } from 'react'
 import JoditEditor from 'jodit-react'
+import { addblog } from '@/lib/api/blog'
+import { useRouter } from 'next/navigation'
 const CreatePost = () => {
   
   const [title,setTitle] = useState('')
-  const[description,setDescription] = useState('')
+  const[body,setBody] = useState('')
   const[summary,setSummary] = useState('')
-  const[date,setDate]= useState(()=>{
+  const router = useRouter()
+
+  const[lastUpdated,setLastUpdated]= useState(()=>{
     const today = new Date() //this gives output May 28, 2025 at 3:45 PM
     return today.toISOString().split('T')[0] //first gives ISO format that is 2025-5-28T15:45:00 then with split('T') it creates new array ['2025-05-28','15:45:00']and [0] to take first element in the array
   })
@@ -18,11 +22,17 @@ const CreatePost = () => {
    try{
       const formdata = new FormData()
       formdata.set('title',title)
-      formdata.set('description',description)
+      formdata.set('body',body)
       formdata.set('summary',summary)
-      formdata.set('date',date)
+      formdata.set('lastUpdated',lastUpdated)
 
-      console.log(formdata)
+      const result = await addblog({title,body,summary,lastUpdated})
+      
+    //   check status
+    if(result.status===200){
+        alert('Blog Added')
+        router.push('/')
+    }
    }
    catch(err){
     console.log(err)
@@ -58,8 +68,8 @@ const CreatePost = () => {
                     </label>
                     <div className='border-2 border-neutral-200  shdaow-sm p-2 max-w-full rounded-lg focus:ring-1 focus:ring-neutral-200'>
                          <JoditEditor ref={edior}
-                         value={description}
-                         onChange={(newContent)=>setDescription(newContent)}
+                         value={body}
+                         onChange={(newContent)=>setBody(newContent)}
                          />
                     </div>  
                 </div>
@@ -84,8 +94,8 @@ const CreatePost = () => {
                     </label>
                     <div className='border-2 flex flex-row border-neutral-200 shadow-sm p-2 max-w-full rounded-lg focus:ring-1 focus:ring-neutral-200'>
                          <input type='date'
-                         value={date}
-                         onChange={(e)=>setDate(e.target.value) }
+                         value={lastUpdated}
+                         onChange={(e)=>setLastUpdated(e.target.value) }
                          className='outline-none bg-transparent w-full'/>
                     </div>  
                 </div>

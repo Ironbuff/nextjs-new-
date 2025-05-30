@@ -4,7 +4,7 @@
 
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import {  useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 import { FaEyeSlash, FaUserCircle } from 'react-icons/fa';
 import { IoEyeSharp } from 'react-icons/io5';
@@ -20,7 +20,9 @@ const Login = () => {
   const[email,setEmail]= useState('');
   const[password,setPassword]= useState('');
   const router = useRouter()
+  const params = useSearchParams()
   const[showpassword,setShowpassword] = useState(false)
+  const userIdParam = params.get('userId')
   const dispatch = useDispatch()
   
 
@@ -30,10 +32,13 @@ const Login = () => {
     e.preventDefault()
     try{
        const result = await loginUser({email,password})
+       console.log(result)
        if(result.status===200){
         alert('sucessfully logged In')
         dispatch(authActions.loggin())
+        dispatch(authActions.adduser(userIdParam))
         localStorage.setItem('token',result.data.token)
+        
         router.push('/')
        }
 

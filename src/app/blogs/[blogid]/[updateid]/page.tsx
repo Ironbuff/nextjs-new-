@@ -1,28 +1,56 @@
 'use client'
 
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import JoditEditor from 'jodit-react'
+import { getblogByid, updateblog } from '@/lib/api/blog'
+import { useParams, useRouter } from 'next/navigation'
 const Updatepost = () => {
   
+  
+  const params = useParams()
+  const router = useRouter()
   const [title,setTitle] = useState('')
-  const[description,setDescription] = useState('')
+  const blogId = params?.updateid as string
+
+  const[body,setBody] = useState('')
   const[summary,setSummary] = useState('')
-  const[date,setDate]= useState(()=>{
+  const[lastUpdated,setLastUpdated]= useState(()=>{
     const today = new Date() //this gives output May 28, 2025 at 3:45 PM
     return today.toISOString().split('T')[0] //first gives ISO format that is 2025-5-28T15:45:00 then with split('T') it creates new array ['2025-05-28','15:45:00']and [0] to take first element in the array
   })
   const edior = useRef(null)
   
-  const Addblog = async(e:React.FormEvent<HTMLFormElement>)=>{
+  
+  useEffect(()=>{
+        const fetch=async()=>{
+            const result = await getblogByid(blogId)
+            setTitle(result.data.title)
+            setBody(result.data.body)
+            setSummary(result.data.summary)
+            setLastUpdated(result.data.lastUpdated)
+        }
+        fetch()
+    },[])
+  
+  
+  const Updateblog = async(e:React.FormEvent<HTMLFormElement>)=>{
   e.preventDefault()
    try{
-      const formdata = new FormData()
-      formdata.set('title',title)
-      formdata.set('description',description)
-      formdata.set('summary',summary)
-      formdata.set('date',date)
-
-      console.log(formdata)
+      
+       const formdata = new FormData()
+             formdata.set('title',title)
+             formdata.set('body',body)
+             formdata.set('summary',summary)
+             formdata.set('lastUpdated',lastUpdated)
+             const Id = parseInt(blogId)
+       
+             const result = await updateblog({title,body,summary,lastUpdated,Id})
+             
+           //   check status
+           if(result.status===200){
+               alert('Blog Added')
+               router.push('/')
+           }
    }
    catch(err){
     console.log(err)
@@ -38,7 +66,7 @@ const Updatepost = () => {
             <h1 className='text-4xl font-bold  text-neutral-700 font-sans'>Update Blog</h1>
         </div>
         <div className='lg:w-[50%]'>
-            <form onSubmit={Addblog} className='flex flex-col gap-y-3 w-full border-2 bg-neutral-50  border-neutral-200 rounded-2xl shadow-sm  p-7'>
+            <form onSubmit={Updateblog} className='flex flex-col gap-y-3 w-full border-2 bg-neutral-50  border-neutral-200 rounded-2xl shadow-sm  p-7'>
                 {/* title  Part*/}
                 <div className='flex flex-col space-y-2'>
                     <label htmlFor='title' className='text-lg font-semibold tracking-wide '>
@@ -58,8 +86,8 @@ const Updatepost = () => {
                     </label>
                     <div className='border-2 border-neutral-200  shdaow-sm p-2 max-w-full rounded-lg focus:ring-1 focus:ring-neutral-200'>
                          <JoditEditor ref={edior}
-                         value={description}
-                         onChange={(newContent)=>setDescription(newContent)}
+                         value={body}
+                         onChange={(newContent)=>setBody(newContent)}
                          />
                     </div>  
                 </div>
@@ -84,10 +112,10 @@ const Updatepost = () => {
                     </label>
                     <div className='border-2 flex flex-row border-neutral-200 shadow-sm p-2 max-w-full rounded-lg focus:ring-1 focus:ring-neutral-200'>
                          <input type='date'
-                         value={date}
-                         max={date}
-                         min={date}
-                         onChange={(e)=>setDate(e.target.value) }
+                         value={lastUpdated}
+                         max={lastUpdated}
+                         min={lastUpdated}
+                         onChange={(e)=>setLastUpdated(e.target.value) }
                          className='outline-none bg-transparent w-full'/>
                     </div>  
                 </div>

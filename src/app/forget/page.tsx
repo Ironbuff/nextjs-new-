@@ -1,30 +1,27 @@
 'use client'
 
-
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { forgetpassword } from '@/lib/api/auth';
 
 const Forget = () => {
   
-  const[submitted,setSubmitted]= useState(false)
-  const[email,setEmail]= useState('')
-  const sucess= 'http://localhost:3000/sucess'
-  const failure= 'http://localhost:3000/failure'
-
   
-  const router = useRouter()
+  const[email,setEmail]= useState('')
+  
+  const redirectLink= 'http://192.168.110.192:3000/change'
+  const [submitted,setSubmitted] = useState(false)
+  
+  
 
   const handleSubmit = async(e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault()
     try{
-      console.log("Email Sent ",email)
-      const data = {
-        email,
-        sucess,
-        failure,
+      const result = await forgetpassword({email,redirectLink})
+      if(result.status===200){
+        alert('Send Message to Email')
+        setSubmitted(!submitted)
+        
       }
-      setSubmitted(!submitted)
-      router.push('/change')
     }
     catch(err){
       console.log(err)

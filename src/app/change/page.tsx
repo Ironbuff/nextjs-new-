@@ -1,22 +1,44 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import { changePassword } from '@/lib/api/auth'
+import { useRouter, useSearchParams } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
-
 
 const Changepassword = () => {
 
     const [showpassword, setShowpassword] = useState(false)
     const [password, setPassword] = useState('')
     const [newpassword, setNewpassword] = useState('')
+    const[userId,setUserId]= useState('')
+    const[token,setToken]= useState('')
     const router = useRouter()
+    const params = useSearchParams()
 
+    useEffect(() => {
+       const userIdParam = params.get('userId')
+        const tokenParam = params.get('token')
+        
+        if (userIdParam) setUserId(userIdParam)
+        if (tokenParam) setToken(tokenParam)
+      
+    }, [params])
+    
+    
+    
     const handleChange = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         try {
-            router.push('/login')
+                const result = await changePassword({newpassword,userId,token})
 
+                console.log(result)
+                if(result.status===200){
+                    alert('Password Changed Sucessfully')
+                    router.push('/login')
+                }
+                alert('password couldnt be changed')
+                
+      
         }
         catch (err) {
             console.log(err)
