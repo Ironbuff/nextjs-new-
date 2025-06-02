@@ -1,7 +1,9 @@
 
+
 import axios from 'axios'
 
 const api = process.env.NEXT_PUBLIC_API_BASE
+
 
 
 export const registerUser = async(data:{
@@ -30,17 +32,19 @@ export const loginUser = async(data:{
 }
 
 export const Emailverification = async(data:{
-    sucessUrl:string,
+    successUrl:string,
     failureUrl:string,
-    email:string,
+    Email:string,
 })=>{
     const response = await axios.post(`${api}/api/AuthApi/sendEmailConfirmationMail`,data,{
          headers:{
             'Content-Type':'application/json',
         }
     },)
-    return response.data
+    return response
 }
+
+
 
 
 export const forgetpassword = async(data:{

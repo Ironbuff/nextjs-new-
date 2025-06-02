@@ -8,8 +8,8 @@ import { IoCalendarOutline } from 'react-icons/io5'
 import { RxAvatar } from 'react-icons/rx'
 import { FaRegEdit } from 'react-icons/fa'
 import { MdOutlineDeleteForever } from 'react-icons/md'
-import img from '../../../../public/Meditation.jpg'
 import { deleteblog, getblogByid } from '@/lib/api/blog'
+import { toast, ToastContainer } from 'react-toastify'
 
 const Blogdetail = () => {
   const params = useParams()
@@ -24,6 +24,7 @@ const Blogdetail = () => {
       try {
         // Get blog data
         const result = await getblogByid(blogId)
+        console.log(result)
         setData(result.data)
 
         // Decode JWT token to get user ID
@@ -47,7 +48,7 @@ const Blogdetail = () => {
     try{
            const result = await deleteblog(parseInt(blogId))
            if(result.status===200){
-            alert('Deleted Sucessfully')
+            toast.success('Deleted Sucessfully')
             router.push('/')
            }
     }
@@ -59,6 +60,8 @@ const Blogdetail = () => {
   return (
     <div className=' bg-gray-700 text-neutral-100 py-4 w-full h-full lg:px-28 px-5 flex flex-col gap-y-5'>
       
+      
+      <ToastContainer/>
       {data &&(
               <div className='flex flex-col max-w-screen-xl mx-auto gap-y-5 items-center w-full justify-center'>
         
@@ -75,7 +78,7 @@ const Blogdetail = () => {
         {/* Blog Image */}
         <div>
           <Image
-            src={img}
+            src={data.imageUrl}
             width={900}
             height={200}
             className='w-full bg-right shadow-sm h-[55vh] object-cover rounded-lg mx-auto'
@@ -86,7 +89,7 @@ const Blogdetail = () => {
         {/* Author and Date Info */}
         <div className='flex flex-row gap-x-2 py-2'>
           <div className='flex flex-row items-center text-sm gap-x-1'>
-            <RxAvatar size={20} /> Francis Saint
+            <RxAvatar size={20} /> {data.userName} {console.log(data.userName)}
           </div>
           <div className='flex flex-row items-center text-sm gap-x-1'>
             <IoCalendarOutline size={20} /> {data.lastUpdated}
@@ -94,8 +97,9 @@ const Blogdetail = () => {
         </div>
 
         {/* Blog Body */}
-        <p className='text-justify md:text-base text-sm leading-relaxed hyphens-auto'>
-          {data.body}
+        <p className='text-justify md:text-base text-sm leading-relaxed hyphens-auto'
+        dangerouslySetInnerHTML={{__html:data.body}}
+        >
         </p>
 
         {/* Edit/Delete Buttons (if user owns the blog) */}

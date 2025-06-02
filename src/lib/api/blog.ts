@@ -8,17 +8,10 @@ import axios from 'axios'
 const api = process.env.NEXT_PUBLIC_API_BASE
 
 
-export const addblog = async(data:{
-    title:string,
-    body:string,
-    summary:string,
-    lastUpdated:string,
-   
-  
-})=>{
-    const response = await axios.post(`${api}/api/BlogApi/createNewBlog`,data,{
+export const addblog = async(formdata: FormData)=>{
+    const response = await axios.post(`${api}/api/BlogApi/createNewBlog`,formdata,{
         headers:{
-            'Content-Type':'application/json',
+            'Content-Type':'multipart/formdata',
             'Authorization':`Bearer ${localStorage.getItem("token")}`
         }
     
@@ -27,15 +20,11 @@ export const addblog = async(data:{
 }
 
 export const updateblog = async(data:{
-    title:string,
-    body:string,
-    summary:string,
-    lastUpdated:string,
-    Id:number,
+    formdata:FormData
 })=>{
     const response = await axios.put(`${api}/api/BlogApi/updateBlog`,data,{
         headers:{
-            'Content-Type':'application/json',
+            'Content-Type':'multipart/formdata',
             'Authorization':`Bearer ${localStorage.getItem('token')} `
         }
     },)

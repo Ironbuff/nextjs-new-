@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { forgetpassword } from '@/lib/api/auth';
+import { toast } from 'react-toastify';
 
 const Forget = () => {
   
@@ -18,7 +19,7 @@ const Forget = () => {
     try{
       const result = await forgetpassword({email,redirectLink})
       if(result.status===200){
-        alert('Send Message to Email')
+        toast.success('Send Message to Email')
         setSubmitted(!submitted)
         
       }

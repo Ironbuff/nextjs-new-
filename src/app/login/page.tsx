@@ -5,13 +5,15 @@
 
 import Link from 'next/link';
 import {  useRouter, useSearchParams } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaEyeSlash, FaUserCircle } from 'react-icons/fa';
 import { IoEyeSharp } from 'react-icons/io5';
 import { RiLockPasswordFill } from 'react-icons/ri';
 import { loginUser } from '@/lib/api/auth';
 import { useDispatch } from 'react-redux';
 import { authActions } from '@/store/auth';
+import { toast} from 'react-toastify';
+
 
 
 
@@ -34,11 +36,10 @@ const Login = () => {
        const result = await loginUser({email,password})
        console.log(result)
        if(result.status===200){
-        alert('sucessfully logged In')
         dispatch(authActions.loggin())
         dispatch(authActions.adduser(userIdParam))
         localStorage.setItem('token',result.data.token)
-        
+        toast.success('User Logged In Sucessfully')
         router.push('/')
        }
 
@@ -53,6 +54,7 @@ const Login = () => {
   
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-10ch)] bg-gray-100 px-4">
+     
       <form onSubmit={handlesubmit} className="w-full max-w-xl bg-white rounded-2xl shadow-lg p-10 space-y-6">
         <h1 className="text-3xl font-bold text-center text-neutral-700">Login</h1>
 

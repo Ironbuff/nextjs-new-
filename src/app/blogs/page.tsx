@@ -19,15 +19,17 @@ const Blogs = () => {
         summary: string
         creator: string
         lastUpdated: string
+        userName:string
+        imageUrl:string
     }
      
     const [data, setData] = useState<Blog[]>([])
 
     useEffect(() => {
 
-        console.log('UseEffect Triggered')
         const fetchData = async () => {
             const result = await getblogs()
+            console.log(result)
             setData(result.data)
             console.log(data)
 
@@ -41,7 +43,7 @@ const Blogs = () => {
                 Blog App
             </h1>
 
-            <div className='flex md:flex-row flex-col gap-y-3 gap-x-2 w-full flex-nowrap items-center justify-center'>
+            <div className='grid lg:grid-cols-3 space-x-3 space-y-2  w-full grid-cols-1'>
                 { data && data.map((item) => (
                     <Link href={`/blogs/${item.id}`} key={item.id}>
                         <motion.div
@@ -52,7 +54,7 @@ const Blogs = () => {
                             className=' transition-all hover:float-right group ease-in-out duration-300  flex flex-col  overflow-hidden w-fit space-x-1  border-2 border-neutral-100 shadow-lg rounded-2xl'>
 
                             {/* Image Section */}
-                            <Image src={nature} alt='nature-image' className='object-cover rounded-xl shadow-sm w-full' width={500} height={50} />
+                            <Image src={item.imageUrl} alt='nature-image' className='object-cover rounded-xl shadow-sm w-full' width={500} height={50} />
 
                             <div className='flex px-4 h-full w-full py-10 flex-col gap-y-4 '>
                                 {/* category */}
@@ -71,7 +73,7 @@ const Blogs = () => {
                                     <div className='flex flex-row items-center gap-x-1'>
                                         <RxAvatar size={40} />
                                         <div className='flex justify-center flex-col gap-y-1'>
-                                            <span className='font-semibold text-lg'>{item.creator}</span>
+                                            <span className='font-semibold text-lg'>{item.userName}</span>
                                             <span className='font-extralight'>{item.lastUpdated}</span>
                                         </div>
                                     </div>

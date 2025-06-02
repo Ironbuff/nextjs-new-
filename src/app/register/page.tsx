@@ -10,6 +10,7 @@ import { FaEyeSlash, FaUserCircle } from 'react-icons/fa';
 import { IoEyeSharp } from 'react-icons/io5';
 import { MdMail } from 'react-icons/md';
 import { RiLockPasswordFill } from 'react-icons/ri';
+import { toast } from 'react-toastify';
 
 
 const Register = () => {
@@ -28,22 +29,26 @@ const Register = () => {
     try {
       const result = await registerUser({username,password,email})
       console.log(result.status)
-      if(result.status===200){
-        alert('registered')
+      console.log(result)
+      if(result?.status===200){
+        toast.success('registered')
         router.push('/valid')
       }
-
+      else{
+        toast.error('Registration Failed try again')
+      }
      
     }
     catch (err) {
-      console.log(err)
-    }
+     console.log(err)
+     toast.error(`the error ${err}`)
   }
 
-
+  }
 
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-10ch)] bg-gray-100 px-4">
+      
       <form onSubmit={handleregister} className="w-full max-w-xl bg-white rounded-2xl shadow-lg p-12 space-y-6"
 
       >
@@ -125,6 +130,6 @@ const Register = () => {
       </form>
     </div>
   );
-};
+}
 
-export default Register;
+export default Register

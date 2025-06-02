@@ -4,6 +4,7 @@ import { changePassword } from '@/lib/api/auth'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
+import { toast } from 'react-toastify'
 
 const Changepassword = () => {
 
@@ -33,11 +34,9 @@ const Changepassword = () => {
 
                 console.log(result)
                 if(result.status===200){
-                    alert('Password Changed Sucessfully')
+                    toast.success('Password Changed Sucessfully')
                     router.push('/login')
                 }
-                alert('password couldnt be changed')
-                
       
         }
         catch (err) {
