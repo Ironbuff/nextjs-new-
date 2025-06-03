@@ -15,7 +15,7 @@ const Updatepost = () => {
 
   const[body,setBody] = useState('')
   const[summary,setSummary] = useState('')
-  const[file,setFile]= useState<string|null>()
+  const[file,setFile]= useState<File|null>()
   const[lastUpdated,setLastUpdated]= useState(()=>{
     const today = new Date() //this gives output May 28, 2025 at 3:45 PM
     return today.toISOString().split('T')[0] //first gives ISO format that is 2025-5-28T15:45:00 then with split('T') it creates new array ['2025-05-28','15:45:00']and [0] to take first element in the array
@@ -38,19 +38,18 @@ const Updatepost = () => {
   const Updateblog = async(e:React.FormEvent<HTMLFormElement>)=>{
   e.preventDefault()
    try{
-           const id = blogId
-       const formdata = new FormData()
+          
+             const formdata = new FormData()
              formdata.set('title',title)
              formdata.set('body',body)
              formdata.set('summary',summary)
              formdata.set('lastUpdated',lastUpdated)
              
-             formdata.set('id',id)
              if(file){
                 formdata.append('file',file)
              }
        
-             const result = await updateblog({formdata})
+             const result = await updateblog({formdata},blogId)
              
            //   check status
            if(result.status===200){

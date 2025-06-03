@@ -1,7 +1,6 @@
 'use client'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
-import nature from '../../../public/Nature.jpg'
 import { RxAvatar } from 'react-icons/rx'
 import { motion } from 'framer-motion'
 import { FaArrowUp } from 'react-icons/fa'
@@ -51,7 +50,7 @@ const Blogs = () => {
                             initial={{ opacity: 0.8, scale: 0.8 }}
                             transition={{ duration: 0.3 }}
 
-                            className=' transition-all hover:float-right group ease-in-out duration-300  flex flex-col  overflow-hidden w-fit space-x-1  border-2 border-neutral-100 shadow-lg rounded-2xl'>
+                            className=' transition-all  hover:float-right group ease-in-out duration-300  flex flex-col  overflow-hidden w-fit space-x-1  border-2 border-neutral-100 shadow-lg rounded-2xl'>
 
                             {/* Image Section */}
                             <Image src={item.imageUrl} alt='nature-image' className='object-cover rounded-xl shadow-sm w-full' width={500} height={50} />
@@ -67,7 +66,7 @@ const Blogs = () => {
 
                                 {/* summary of the blog */}
                                 <p className='text-lg font-base font-serif'>
-                                    {item.summary}
+                                    {item.summary.length>100?item.summary.slice(0,100)+"...":item.summary}
                                 </p>
                                 <div className='h-full flex flex-row justify-between items-center font-sans'>
                                     <div className='flex flex-row items-center gap-x-1'>

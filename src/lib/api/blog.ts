@@ -1,4 +1,5 @@
 
+
 "use client"
 
 
@@ -21,8 +22,9 @@ export const addblog = async(formdata: FormData)=>{
 
 export const updateblog = async(data:{
     formdata:FormData
-})=>{
-    const response = await axios.put(`${api}/api/BlogApi/updateBlog`,data,{
+    
+},blogId:string)=>{
+    const response = await axios.put(`${api}/api/BlogApi/updateBlog/${blogId}`,data?.formdata,{
         headers:{
             'Content-Type':'multipart/formdata',
             'Authorization':`Bearer ${localStorage.getItem('token')} `
@@ -64,4 +66,68 @@ export const deleteblog = async(blogId:number)=>{
   })
   return response
 }
+
+export const AddComment = async(data:{
+  blogId:string,
+  Timestamp:string,
+  commentText:string
+})=>{
+  const response = await axios.post(`${api}/api/CommentApi/createComment`,data,{
+    headers:{
+      'Content-Type':'application/json',
+      'Authorization':`Bearer ${localStorage.getItem('token')}`,
+    }
+  })
+  return response
+}
+
+export const getComment = async(blogId:string)=>{
+  const response = await axios.get(`${api}/api/CommentApi/getCommentsByBlogId/${blogId}`,{
+     headers:{
+         'Content-Type':'application/json',
+         "ngrok-skip-browser-warning": "true",
+       }
+  })
+
+  return response
+}
+
+export const DeleteComment = async(commentId:string)=>{
+  const response = await axios.delete(`${api}/api/CommentApi/deleteComment/${commentId}`,{
+     headers:{
+      'Content-Type':'application/json',
+      'Authorization':`Bearer ${localStorage.getItem('token')}`,
+      
+    }
+  })
+  return response
+}
+
+export const getCommentByCid = async(commentId:string)=>{
+  const response = await axios.get(`${api}/api/CommentApi/getCommentsByCommentId/${commentId}`,{
+    headers:{
+      'Content-Type':'application/json',
+      "ngrok-skip-browser-warning":"true",
+    }
+  })
+  return response
+}
+
+export const EditComment = async(data:{
+  id:string,
+  userId:string|null,
+  commentText:string,
+  commentId:string,
+  TimeStamp:string,
+})=>{
+  const response = await axios.put(`${api}/api/CommentApi/updateComment/${data.commentId}`,data,{
+    headers:{
+      'Content-Type':'application/json',
+      'Authorization':`Bearer ${localStorage.getItem('token')}`
+    }
+  })
+  return response
+}
+
+
 

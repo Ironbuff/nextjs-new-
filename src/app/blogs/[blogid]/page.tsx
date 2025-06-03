@@ -10,6 +10,7 @@ import { FaRegEdit } from 'react-icons/fa'
 import { MdOutlineDeleteForever } from 'react-icons/md'
 import { deleteblog, getblogByid } from '@/lib/api/blog'
 import { toast, ToastContainer } from 'react-toastify'
+import Comment from '../../comment/page'
 
 const Blogdetail = () => {
   const params = useParams()
@@ -70,7 +71,7 @@ const Blogdetail = () => {
           <h1 className='text-3xl lg:text-4xl text-center font-bold font-serif'>
             {data.title}
           </h1>
-          <small className='text-center max-w-[60%] flex items-center justify-center'>
+          <small className='text-center max-w-[60%] flex items-center justify-center m'>
             {data.summary}
           </small>
         </div>
@@ -119,6 +120,7 @@ const Blogdetail = () => {
             </button>
           </div>
         )}
+        <Comment blogId={blogId}/>
       </div>
       )}
       
