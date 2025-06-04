@@ -34,19 +34,22 @@ const Login = () => {
     e.preventDefault()
     try{
        const result = await loginUser({email,password})
-       console.log(result)
        if(result.status===200){
         dispatch(authActions.loggin())
         dispatch(authActions.adduser(userIdParam))
         localStorage.setItem('token',result.data.token)
+        localStorage.setItem('refreshToken',result.data.refreshToken)
+        localStorage.setItem('acessTokenExpiresIn',result.data.accessTokenExpires)
         toast.success('User Logged In Sucessfully')
         router.push('/')
        }
-
-       
+       else{
+        dispatch(authActions.logout())
+       }      
     }
     catch(err){
       console.log(err)
+      
     }
     
   }

@@ -34,15 +34,12 @@ export const updateblog = async(data:{
 }
 
 export const getblogs = async () => {
-  console.log('hello')
     const response = await axios.get(`${api}/api/BlogApi/getBlogs`, {
     headers: {
       'Content-Type': 'application/json',
         "ngrok-skip-browser-warning": "true",
     }
   });
-    console.log('hello',response)
-
   return response; // <- return the actual data
 }
 
@@ -129,5 +126,25 @@ export const EditComment = async(data:{
   return response
 }
 
+export const reactOnBlog = async(data:{blogId:string,reaction:1|-1,userId:string})=>{
+  const response = await axios.post(`${api}/api/ReactionApi/reactOnBlog`,data,{
+    headers:{
+      'Content-Type':'application/json',
+      'Authorization':`Bearer ${localStorage.getItem('token')}`
+    }
+  })
+  return response
+}
+
+export const getReactionCount = async(data:{blogId:string,reaction:1|-1})=>{
+  const response = await axios.get(`${api}/api/ReactionApi/getReactionCountByBlogId/${data.blogId}/${data.reaction}`,{
+    headers:
+    {
+      'Content-Type':'application/json',
+      "ngrok-skip-browser-warning":"true",
+    }
+  })
+  return response
+}
 
 

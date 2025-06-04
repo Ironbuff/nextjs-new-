@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import img from '../../../public/blog-j.png'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -14,7 +14,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import type { RootState } from '@/store/Store'
 import { useRouter } from 'next/navigation'
 import { authActions } from '@/store/auth'
-import { toast} from 'react-toastify'
+import { toast } from 'react-toastify'
+import { refreshAccessToken } from '@/lib/api/auth'
 
 
 
@@ -29,19 +30,69 @@ const Navbar = () => {
     const dispatch = useDispatch()
 
 
-    const handlelogout = async()=>{
-        try{
-              dispatch(authActions.logout())
-              localStorage.removeItem('token')
-              toast.success('Logged Out Sucessfully')
-              router.push('/')
+
+    const fetch = () => {
+        const interval = setInterval(async () => {
+            const accessTokenExpires = localStorage.getItem("acessTokenExpiresIn");
+
+            if (accessTokenExpires && new Date(accessTokenExpires).getTime() <= Date.now()) {
+                try {
+                    await refreshAccessToken(); // Renew access token
+                    console.log("Access token refreshed successfully.");
+                } catch (error) {
+                    console.error("Token refresh failed, logging out...");
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("refreshToken");
+                    localStorage.removeItem("acessTokenExpiresIn");
+                    dispatch(authActions.logout());
+                    router.push("/login");
+                    console.log(error)
+                }
+            }
+        }, 60000); // Check every 1 min
+
+        return () => clearInterval(interval);
+    }
+
+    const loginCheck = () => {
+        if (localStorage.getItem('token')) {
+            dispatch(authActions.loggin())
+        }
+        else {
+            dispatch(authActions.logout())
+        }
+    }
+
+
+    useEffect(() => {
+
+        loginCheck();
+
+        fetch();
+
+    }, [])
+
+
+
+
+
+
+
+    const handlelogout = async () => {
+        try {
+            dispatch(authActions.logout())
+            localStorage.removeItem('token')
+            localStorage.removeItem('refreshToken')
+            localStorage.removeItem('acessTokenExpiresIn')
+            toast.success('Logged Out Sucessfully')
+            router.push('/')
 
         }
-        catch(err){
+        catch (err) {
             console.log(err)
         }
     }
-    
+
     const Navitems = logged ? [
         { id: 3, names: "CreatePost", links: "/create", icon: <MdCreateNewFolder size={20} /> },
         { id: 4, names: "Log Out", links: "/logout", action: true, icon: <SlLogout size={20} /> }
@@ -56,8 +107,8 @@ const Navbar = () => {
     return (
         <>
             <nav className={'h-[10ch] bg-neutral-100 border-2 border-neutral-100 shadow-md flex flex-row items-center justify-between lg:px-28 px-3'}>
-                
-               
+
+
                 {/* Title Section */}
                 <Link href={'/'} className='flex flex-row items-center'>
                     <Image src={img} alt='blog-app' className='h-[10vh] w-fit' />
@@ -94,18 +145,23 @@ const Navbar = () => {
             {/* Mobile Nav */}
             {
                 mobilenav && (
-                    <div className='flex items-center justify-center w-full h-screen bg-neutral-200'>
-                        <div className='absolute top-9 z-50 right-3'>
-                            <button onClick={() => setMobilenav(!mobilenav)} >
-                                <FaX size={20} className='font-bold' />
-                            </button>
-                        </div>
+                    <div className='flex items-center justify-center w-full h-screen bg-neutral-100'>
+
                         <div className='flex flex-col w-full items-center justify-center gap-y-2'>
-                            {Navitems.map((item, i) => (
-                                <Link key={i} href={item.links} className='text-xl text-gray-800 font-semibold bg-gray-200 py-3 px-3 w-full flex items-center justify-center rounded-lg shadow-md hover:bg-gray-400 transition-all ease-in-out duration-300'>
-                                    {item.names}
-                                </Link>
-                            ))}
+                            {Navitems.map((item, i) =>
+                                item.action ? (
+                                    <button key={i} onClick={() => {
+                                        handlelogout();
+                                        setMobilenav(false)
+                                    }}
+                                        className='text-xl text-gray-800 font-semibold bg-gray-200 py-3 px-3 w-full flex items-center justify-center rounded-lg shadow-md hover:bg-gray-400 transition-all ease-in-out duration-300'>
+                                        {item.names}
+                                    </button>
+                                ) : (
+                                    <Link key={i} onClick={() => setMobilenav(false)} href={item.links} className='text-xl text-gray-800 font-semibold bg-gray-200 py-3 px-3 w-full flex items-center justify-center rounded-lg shadow-md hover:bg-gray-400 transition-all ease-in-out duration-300'>
+                                        {item.names}
+                                    </Link>
+                                ))}
                         </div>
                     </div>
                 )

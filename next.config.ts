@@ -5,7 +5,7 @@ const apiDomain = apiBaseUrl ? new URL(apiBaseUrl).hostname : null; // Extract t
 const nextConfig: NextConfig = {
   /* config options here */
   images:{
-       domains: ["media.istockphoto.com", apiDomain] // Ensures valid entries
+       domains: ["media.istockphoto.com", apiDomain,"3dda-182-93-84-47.ngrok-free.app"] // Ensures valid entries
   },
 };
 
