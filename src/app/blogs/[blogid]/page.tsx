@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { IoCalendarOutline } from 'react-icons/io5'
 import { RxAvatar } from 'react-icons/rx'
-import { FaRegEdit } from 'react-icons/fa'
+import { FaRegEdit, FaThumbsDown, FaThumbsUp, FaUser, FaUserCircle } from 'react-icons/fa'
 import { MdOutlineDeleteForever } from 'react-icons/md'
 import { deleteblog, getblogByid, reactOnBlog } from '@/lib/api/blog'
 import { toast, ToastContainer } from 'react-toastify'
@@ -93,38 +93,41 @@ const Blogdetail = () => {
   
 
   return (
-    <div className=' bg-gray-700 text-neutral-100 py-4 w-full h-full lg:px-28 px-5 flex flex-col gap-y-5'>
+    <div className=' bg-neutral-800 text-neutral-100 py-4 w-full h-full lg:px-28 px-5 flex flex-col gap-y-5'>
 
 
       <ToastContainer />
       {data && (
-        <div className='flex flex-col max-w-screen-xl mx-auto gap-y-5 items-center w-full justify-center'>
+        <div className='flex flex-col max-w-screen-lg mx-auto gap-y-5 items-center w-full justify-center'>
 
           {/* Title and Summary */}
           <div className='flex flex-col items-center justify-center gap-y-3 w-full'>
-            <h1 className='text-3xl lg:text-5xl text-center font-bold font-serif'>
+            <h1 className='text-4xl tracking-wide lg:text-5xl text-center font-bold font-serif'>
               {data.title}
             </h1>
-            <small className='text-center max-w-[60%] flex items-center justify-center m'>
+            <p className='text-center max-w-[80%] flex items-center justify-center m'>
               {data.summary}
-            </small>
+            </p>
           </div>
 
           {/* Blog Image */}
           <div>
             <Image
               src={`${apiBaseUrl}/${data.imageUrl}`}
-              width={900}
-              height={200}
-              className='w-full bg-right shadow-sm h-[55vh] object-cover rounded-lg mx-auto'
+              width={720}
+              height={300}
+              className='w-full shadow-xl bg-right  h-[70vh] object-cover rounded-lg mx-auto'
               alt='Blog image'
             />
           </div>
 
           {/* Author and Date Info */}
-          <div className='flex flex-row  items-center justify-center gap-x-5'>
-            <div className='flex flex-row items-center text-sm gap-x-1'>
-              <RxAvatar size={20} /> {data.userName}
+          <div className='flex flex-row  items-center lg:w-[90%] w-full justify-between  gap-x-5'>
+            <div className='flex flex-row  items-center text-sm gap-x-2'>
+              <span className='p-2 border rounded-xl  border-neutral-700 bg-neutral-700 shadow-sm'>
+              <FaUser  size={18} className='shadow-sm  text-neutral-300 rounded-xl ' /> 
+              </span>
+              {data.userName}
             </div>
             <div className='flex flex-row items-center text-sm gap-x-1'>
               <IoCalendarOutline size={20} /> {data.lastUpdated}
@@ -132,7 +135,7 @@ const Blogdetail = () => {
           </div>
 
           {/* Blog Body */}
-          <p className='text-justify md:text-base text-sm leading-relaxed hyphens-auto'
+          <p className='text-justify md:text-base text-base leading-relaxed hyphens-auto'
             dangerouslySetInnerHTML={{ __html: data.body }}
           >
           </p>
@@ -140,17 +143,17 @@ const Blogdetail = () => {
 
           <div className='flex flex-row w-full  justify-between items-center '>
             <div className='flex flex-row gap-x-3'>
-              <button onClick={() => handlereaction(data.id, 1, data.userId)} className=' flex flex-row gap-x-2 '>
+              <button onClick={() => handlereaction(data.id, 1, data.userId)} className='cursor-pointer flex flex-row gap-x-2 rounded-md p-2 border bg-neutral-700 border-neutral-700  '>
                 <span>
                   {data.likeCount}
                 </span>
-                  <BiLike className='hover:text-blue-600 hover:scale-105 transition-all ease-in-out' size={22} />
+                  <FaThumbsUp  className='hover:text-blue-600 hover:scale-105 transition-all ease-in-out' size={22} />
               </button>
-              <button onClick={() => handlereaction(data.id, -1, data.userId)} className=' flex flex-row gap-x-2 '>
+              <button onClick={() => handlereaction(data.id, -1, data.userId)} className='cursor-pointer border border-neutral-700 bg-neutral-700 rounded-md p-2 flex flex-row gap-x-2 '>
                 <span>
                   {data.dislikeCount}
                 </span>
-                 <BiDislike className='hover:text-red-600 hover:scale-105 transition-all ease-in-out' size={22} />
+                 <FaThumbsDown className='hover:text-red-600 hover:scale-105 transition-all ease-in-out' size={22} />
               </button>
             </div>
             {/* Edit/Delete Buttons (if user owns the blog) */}

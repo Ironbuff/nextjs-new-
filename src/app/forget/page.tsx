@@ -20,8 +20,7 @@ const Forget = () => {
       const result = await forgetpassword({email,redirectLink})
       if(result.status===200){
         toast.success('Send Message to Email')
-        setSubmitted(!submitted)
-        
+        setSubmitted(!submitted) 
       }
     }
     catch(err){

@@ -32,6 +32,9 @@ const Login = () => {
 
   const handlesubmit = async(e: React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault()
+
+   
+
     try{
        const result = await loginUser({email,password})
        if(result.status===200){
@@ -94,6 +97,7 @@ const Login = () => {
               placeholder="Enter your password"
               className="flex-1 bg-transparent outline-none text-neutral-800"
             />
+           
             <span onClick={()=>setShowpassword(!showpassword)} className='absolute top-3 right-4 cursor-pointer'>
               {showpassword?<IoEyeSharp/>:<FaEyeSlash/>}
               </span>

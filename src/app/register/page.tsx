@@ -20,12 +20,17 @@ const Register = () => {
   const [email, setEmail] = useState('')
   const router = useRouter()
   const [showpassword, setShowpassword] = useState(false)
+  const[passworderror,setPassworderror]=useState('')
 
  
 
   const handleregister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
+     const passwordpattern = /^(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,}$/;
+        if(!passwordpattern.test(password)){
+          setPassworderror('Password must be 6+ chars, include one capital and one special char.')
+        }
+    
     try {
       const result = await registerUser({username,password,email})
       console.log(result.status)
@@ -107,6 +112,7 @@ const Register = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+             {passworderror && (<p className='text-sm text-red-400'>{passworderror}</p>) }
             <span onClick={() => setShowpassword(!showpassword)} className='absolute top-3 right-4 cursor-pointer'>
               {showpassword ? <IoEyeSharp /> : <FaEyeSlash />}
             </span>
